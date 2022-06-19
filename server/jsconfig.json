@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "*": [
+                "src/*"
+            ],
+            "@q/*": [
+                "src/graphql"
+            ],
+            "@constants": [
+                "src/constants/*",
+                "src/constants/index",
+            ],
+            "@db": [
+                "./src/db/*",
+                "./src/db/index"
+            ],
+            "@lib": [
+                "./src/lib/*",
+                "./src/lib/index"
+            ],
+            "@models": [
+                "./src/models/*",
+                "./src/models/index",
+            ],
+        }
+    }
+}

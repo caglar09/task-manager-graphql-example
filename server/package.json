@@ -1,0 +1,37 @@
+{
+  "name": "task-manager-graphql-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "nodemon --exec  babel-node -- ./src/index.js",
+    "build": "babel ./src --out-dir dist --copy-files --minified"
+  },
+  "author": "Caglar YILDIRIM",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/federation": "^0.36.1",
+    "@graphql-tools/load-files": "^6.5.3",
+    "@graphql-tools/merge": "^8.2.13",
+    "apollo-server": "^2.21.0",
+    "bcrypt": "^5.0.1",
+    "dotenv": "^16.0.1",
+    "graphql-middleware": "^6.1.29",
+    "graphql-redis-subscriptions": "^2.4.2",
+    "graphql-shield": "^7.5.0",
+    "ioredis": "^5.0.5",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^4.7.0",
+    "mongoose": "^6.4.0",
+    "nanoid": "^3.3.4"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.17.10",
+    "@babel/core": "^7.18.2",
+    "@babel/node": "^7.17.10",
+    "@babel/preset-env": "^7.18.2",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "nodemon": "^2.0.16"
+  }
+}

@@ -1,0 +1,49 @@
+type User {
+  id: ID!
+  fullname: String!
+  username: String!
+  email: String!
+}
+
+type LoginResponse {
+  user: User
+  token: String!
+}
+
+# Input İşlemleri
+input createUserInput {
+  fullname: String!
+  email: String!
+  username: String!
+  password: String!
+}
+
+input loginUserInput {
+  username: String!
+  password: String!
+}
+
+input updateUserInput {
+  fullname: String
+}
+
+type Query {
+  # Users
+  users: [User!]!
+  user(id: ID!): User!
+}
+
+type Mutation {
+  # Users
+  createUser(data: createUserInput!): User!
+  updateUser(id: ID!, data: updateUserInput!): User!
+  deleteUser(id: ID!): User!
+  login(data: loginUserInput!): LoginResponse
+  register(data: createUserInput!): User!
+}
+
+type Subscription {
+  userCreated: User!
+  userUpdated: User!
+  userDeleted: User!
+}
