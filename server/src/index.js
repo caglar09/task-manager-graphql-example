@@ -10,13 +10,16 @@ import typeDefs from "./graphql/type-defs";
 import db from "./data";
 
 import mongoDb from "@db";
-mongoDb();
+const client = mongoDb();
 
-import { User } from "@models";
+import { User, Workspace } from "@models";
 import { permissions } from "@q/index";
 import { verifyToken } from "@lib";
+
 const _db = {
+  provider: client,
   User,
+  Workspace,
 };
 
 const server = new ApolloServer({
@@ -28,8 +31,7 @@ const server = new ApolloServer({
     // console.log("req.header", req.headers);
     let authenticatedUser = null;
     const authorization = req.headers.authorization;
-
-    const token = authorization?.split?.("Bearer ")?.[1];
+    const token = authorization?.split?.(" ")?.[1];
 
     if (token) {
       const verifyResult = verifyToken(token);

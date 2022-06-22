@@ -1,5 +1,6 @@
 const User = {
-  // posts: (parent, args, {db}) => db.posts.filter((post) => post.user_id === parent.id),
+  // workspaces: async (parent, args, { _db, user }) =>
+  //   _db.Workspace.find({ userId: user._id }),
   // comments: (parent, args, {db}) =>
   //   db.comments.filter((comment) => comment.user_id === parent.id),
 };

@@ -1,0 +1,19 @@
+type Workspace {
+  id: ID
+  name: String!
+  user: User!
+}
+
+type Query {
+  # Users
+  workspaces: [Workspace!]!
+}
+
+input WorkScapeCreateInput {
+  name: String!
+}
+
+type Mutation {
+  #Workspace
+  createWorkspace(data: WorkScapeCreateInput!): Workspace
+}

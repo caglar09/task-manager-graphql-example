@@ -7,8 +7,4 @@ const typesArray = loadFilesSync(path.join(__dirname), {
   extensions: ["graphql"],
 });
 
-// const typeDefs = mergeTypeDefs(typesArray);
-
-// export { typeDefs };
-
 module.exports = mergeTypeDefs(typesArray);

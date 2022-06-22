@@ -3,6 +3,7 @@ type User {
   fullname: String!
   username: String!
   email: String!
+  workspaces: [Workspace!]
 }
 
 type LoginResponse {

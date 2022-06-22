@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import { MONGODB_URL, MONGODB_NAME } from "@constants";
 
 export default () => {
-  mongoose.connect(MONGODB_URL, {
+  const client = mongoose.connect(MONGODB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     serverApi: ServerApiVersion.v1,
@@ -18,4 +18,6 @@ export default () => {
   mongoose.connection.on("err", () => {
     console.log("mongodb connection closed");
   });
+
+  return client;
 };
