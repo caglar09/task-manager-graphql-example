@@ -9,6 +9,7 @@ const MONGODB_URL = process.env.MONGODB_URL;
 const MONGODB_NAME = process.env.MONGODB_NAME;
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
+export * from "./user-permission";
 export {
   REDIS_HOST,
   REDIS_PORT,
