@@ -17,8 +17,24 @@ const WorkspaceSchema = new Schema(
   },
   {
     timestamps: true,
+    id: true,
   }
 );
 
-WorkspaceSchema.path('id');
+// Duplicate the ID field.
+WorkspaceSchema.virtual("id").get(function () {
+  return this._id.toHexString();
+});
+
+// Ensure virtual fields are serialised.
+WorkspaceSchema.set("toJSON", {
+  virtuals: true,
+});
+
+WorkspaceSchema.get("toJSON", {
+  virtuals: true,
+});
+
+
+
 export default model("Workspace", WorkspaceSchema);

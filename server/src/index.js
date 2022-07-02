@@ -22,11 +22,10 @@ const _db = {
   Workspace,
 };
 
+const subgraphSchema = buildSubgraphSchema([{ typeDefs, resolvers }]);
+
 const server = new ApolloServer({
-  schema: applyMiddleware(
-    buildSubgraphSchema([{ typeDefs, resolvers }]),
-    permissions
-  ),
+  schema: applyMiddleware(subgraphSchema, permissions),
   context: async ({ req, res, connection }) => {
     // console.log("req.header", req.headers);
     let authenticatedUser = null;

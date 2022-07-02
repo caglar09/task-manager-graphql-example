@@ -8,7 +8,6 @@ const Query = {
           model: "User",
         },
       });
-      console.log(JSON.stringify(users, null, 4));
       return users ?? [];
     } catch (error) {
       console.log(error);
@@ -20,8 +19,8 @@ const Query = {
       path: "workspaces",
       populate: {
         path: "user",
+        model: "User",
       },
-      options: { strictPopulate: true },
     });
     return user;
   },

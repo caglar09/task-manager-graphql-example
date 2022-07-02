@@ -5,29 +5,6 @@ import { ObjectId } from "mongodb";
 const pubsub = require("../../pubsub");
 
 const Mutation = {
-  // #region Users Mutaiton
-  createUser: (_, { data: { full_name, age } }, { db }) => {
-    // const user = {
-    //   id: nanoid(),
-    //   full_name: full_name,
-    //   age: age,
-    // };
-    // db.users.push(user);
-    // pubsub.publish("userCreated", { userCreated: user });
-    // return user;
-    return {};
-  },
-  updateUser: (_, { id, data }, { db }) => {
-    // const user_index = db.users.findIndex((user) => user.id === id);
-    // if (user_index == -1) throw new Error("User not found");
-    // const updated_user = (db.users[user_index] = {
-    //   ...db.users[user_index],
-    //   ...data,
-    // });
-    // pubsub.publish("userUpdated", { userUpdated: updated_user });
-    // return updated_user;
-    return {};
-  },
   deleteUser: (_, { id }, { db }) => {
     return {};
   },
@@ -76,7 +53,7 @@ const Mutation = {
       const { name } = data;
 
       const workspace = new Workspace({ name, user: ObjectId(user._id) });
-      console.log(workspace);
+
       const authenticatedUser = await _db.User.findById(user._id);
 
       if (authenticatedUser) {
@@ -86,10 +63,70 @@ const Mutation = {
         await authenticatedUser.save();
         return workspace;
       }
+
       return null;
       // pubsub.publish("workspaceCreated", { workspaceCreated: user });
     } catch (error) {
       console.log(error);
+    }
+  },
+
+  updateWorkspace: async (parent, { data }, { _db, user }) => {
+    try {
+      const { name, id } = data;
+
+      const updateResult = await _db.Workspace.updateOne(
+        { id, user: user._id },
+        { $set: { name } }
+      );
+
+      if (updateResult.matchedCount === 0) {
+        return new Error("Workspace Not Found");
+      }
+
+      if (updateResult.modifiedCount > 0) {
+        const updatedWorkspace = await _db.Workspace.findById(id).populate(
+          "user"
+        );
+        return updatedWorkspace.toJSON({ virtuals: true });
+      }
+
+      return new Error("Workspace not updated");
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  deleteWorkspace: async (parent, { data }, { _db, user }) => {
+    const { id } = data;
+
+    const authenticatedUser = await User.findById(user._id);
+
+    if (authenticatedUser) {
+      const deletingWorspaceIndex = authenticatedUser.workspaces.findIndex(
+        (workspaceId) => workspaceId.toString?.() === id
+      );
+
+      const workspace = await Workspace.findOne({
+        _id: id,
+        user: user._id,
+      });
+
+      if (deletingWorspaceIndex === -1 || !workspace) {
+        return new Error("Workspace Not Found");
+      }
+
+      authenticatedUser.workspaces.splice(deletingWorspaceIndex, 1);
+
+      if (workspace) {
+        const deletingWorkspace = await workspace.delete({
+          returnOriginal: true,
+        });
+
+        await authenticatedUser.save();
+
+        return workspace;
+      }
     }
   },
   // #endregion

@@ -1,7 +1,10 @@
+scalar DateTime
+
 type Workspace {
   id: ID
   name: String!
   user: User!
+  createdAt: DateTime
 }
 
 type Query {
@@ -13,7 +16,18 @@ input WorkScapeCreateInput {
   name: String!
 }
 
+input WorkScapeUpdateInput {
+  id: ID!
+  name: String!
+}
+
+input WorkScapeDeleteInput {
+  id: ID!
+}
+
 type Mutation {
   #Workspace
   createWorkspace(data: WorkScapeCreateInput!): Workspace
+  updateWorkspace(data: WorkScapeUpdateInput!): Workspace
+  deleteWorkspace(data: WorkScapeDeleteInput!): Workspace
 }
