@@ -1,4 +1,4 @@
-import { User, Workspace } from "@models";
+import { User, Workspace, WorkspaceUser } from "@models";
 import { PasswordHelper, generateToken } from "lib";
 import { ObjectId } from "mongodb";
 
@@ -29,21 +29,25 @@ const Mutation = {
     return { user, token };
   },
   register: async (_, { data }, { _db }) => {
-    const { email, password, fullname, username } = data;
+    try {
+      const { email, password, fullname, username } = data;
 
-    const hashedPassword = await PasswordHelper.getHashedPassword(password);
-    const user = new User({
-      email,
-      fullname,
-      username,
-      password: hashedPassword,
-    });
+      const hashedPassword = await PasswordHelper.getHashedPassword(password);
+      const user = new User({
+        email,
+        fullname,
+        username,
+        password: hashedPassword,
+      });
 
-    const userResult = await user.save();
+      const userResult = await user.save();
 
-    pubsub.publish("userCreated", { userCreated: user });
+      pubsub.publish("userCreated", { userCreated: user });
 
-    return user;
+      return user;
+    } catch (error) {
+      return new Error(error);
+    }
   },
   // #endregion
 
@@ -127,6 +131,49 @@ const Mutation = {
 
         return workspace;
       }
+    }
+  },
+  // #endregion
+
+  // #region WorkspaceUser
+  addUserOnTheWorkspace: async (parent, { data }, { _db, user }) => {
+    try {
+      const { workspaceId, userId, permissions = [] } = data;
+
+      const findedWorkspace = await Workspace.findById(workspaceId);
+      const findedUser = await User.findById(userId);
+
+      if (!findedWorkspace) {
+        return new Error("Workspace not found");
+      }
+
+      if (!findedUser) {
+        return new Error("User not found");
+      }
+
+      if (!permissions || permissions?.length === 0) {
+        return new Error("User permissions can't null");
+      }
+
+      const workspaceUser = new WorkspaceUser({
+        user: userId,
+        workspace: workspaceId,
+        permissions,
+      });
+
+      const validationResult = await workspaceUser.validate();
+      if (validationResult) {
+        return validationResult;
+      }
+
+      findedWorkspace.workspaceUsers.push(workspaceUser.id);
+
+      await workspaceUser.save();
+      await findedWorkspace.save();
+
+      return workspaceUser;
+    } catch (error) {
+      return error;
     }
   },
   // #endregion

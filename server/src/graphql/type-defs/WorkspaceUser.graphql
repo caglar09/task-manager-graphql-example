@@ -1,0 +1,20 @@
+scalar DateTime
+
+type WorkspaceUser {
+  workspace: Workspace!
+  user: User!
+  permissions:[Int]!
+  createdAt: DateTime
+}
+
+
+input WorkspaceUserCreateInput {
+  userId:ID!
+  workspaceId:ID!
+  permissions:[Int]!
+}
+
+
+type Mutation {
+  addUserOnTheWorkspace(data:WorkspaceUserCreateInput):WorkspaceUser
+}

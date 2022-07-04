@@ -5,6 +5,7 @@ type Workspace {
   name: String!
   user: User!
   createdAt: DateTime
+  workspaceUsers: [WorkspaceUser!]
 }
 
 type Query {
@@ -12,22 +13,22 @@ type Query {
   workspaces: [Workspace!]!
 }
 
-input WorkScapeCreateInput {
+input WorkspaceCreateInput {
   name: String!
 }
 
-input WorkScapeUpdateInput {
+input WorkspaceUpdateInput {
   id: ID!
   name: String!
 }
 
-input WorkScapeDeleteInput {
+input WorkspaceDeleteInput {
   id: ID!
 }
 
 type Mutation {
   #Workspace
-  createWorkspace(data: WorkScapeCreateInput!): Workspace
-  updateWorkspace(data: WorkScapeUpdateInput!): Workspace
-  deleteWorkspace(data: WorkScapeDeleteInput!): Workspace
+  createWorkspace(data: WorkspaceCreateInput!): Workspace
+  updateWorkspace(data: WorkspaceUpdateInput!): Workspace
+  deleteWorkspace(data: WorkspaceDeleteInput!): Workspace
 }

@@ -23,6 +23,29 @@ const WorkspaceUserSchema = new Schema(
   }
 );
 
+WorkspaceUserSchema.pre("validate", function (next) {
+  var self = this;
+
+  model("WorkspaceUser", WorkspaceUserSchema).findOne(
+    { user: this.user, workspace: this.workspace },
+    function (err, results) {
+      console.log(err, results);
+      if (err) {
+        next(err);
+      } else if (results) {
+        self.invalidate(
+          "workspace",
+          "User already has been add on the workspace"
+        );
+
+        next(new Error("User already has been add on the workspace"));
+      } else {
+        next();
+      }
+    }
+  );
+});
+
 // Duplicate the ID field.
 WorkspaceUserSchema.virtual("id").get(function () {
   return this._id.toHexString();

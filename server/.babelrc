@@ -14,7 +14,8 @@
                     "@constants": "./src/constants",
                     "@db": "./src/db",
                     "@models": "./src/models",
-                    "@lib": "./src/lib"
+                    "@lib": "./src/lib",
+                    "@validators": "./src/validators"
                 }
             }
         ]

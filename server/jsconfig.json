@@ -24,6 +24,10 @@
                 "./src/models/*",
                 "./src/models/index",
             ],
+            "@validators": [
+                "./src/validators/*",
+                "./src/validators/index",
+            ]
         }
     }
 }

@@ -1,3 +1,4 @@
 import User from "./User";
 import Workspace from "./Workspace";
-export { User, Workspace };
+import WorkspaceUser from "./WorkspaceUser";
+export { User, Workspace, WorkspaceUser };

@@ -12,7 +12,7 @@ import db from "./data";
 import mongoDb from "@db";
 const client = mongoDb();
 
-import { User, Workspace } from "@models";
+import { User, Workspace, WorkspaceUser } from "@models";
 import { permissions } from "@q/index";
 import { verifyToken } from "@lib";
 
@@ -20,6 +20,7 @@ const _db = {
   provider: client,
   User,
   Workspace,
+  WorkspaceUser,
 };
 
 const subgraphSchema = buildSubgraphSchema([{ typeDefs, resolvers }]);
@@ -27,11 +28,9 @@ const subgraphSchema = buildSubgraphSchema([{ typeDefs, resolvers }]);
 const server = new ApolloServer({
   schema: applyMiddleware(subgraphSchema, permissions),
   context: async ({ req, res, connection }) => {
-    // console.log("req.header", req.headers);
     let authenticatedUser = null;
     const authorization = req.headers.authorization;
     const token = authorization?.split?.(" ")?.[1];
-
     if (token) {
       const verifyResult = verifyToken(token);
 

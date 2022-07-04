@@ -25,7 +25,28 @@ const Query = {
     return user;
   },
   workspaces: async (_, __, { _db, user }) => {
-    return await _db.Workspace.find({ user: user?._id }).populate("user");
+    try {
+      const workspaces = await _db.Workspace.find({ user: user?._id })
+        .populate("user")
+        .populate({
+          path: "workspaceUsers",
+          populate: [
+            {
+              path: "user",
+              model: "User",
+            },
+            {
+              path: "workspace",
+              model: "Workspace",
+            },
+          ],
+        });
+
+      return workspaces;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
   },
 };
 

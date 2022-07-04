@@ -14,6 +14,7 @@ const WorkspaceSchema = new Schema(
       type: Schema.Types.Date,
       default: Date.now,
     },
+    workspaceUsers: [{ type: Schema.Types.ObjectId, ref: "WorkspaceUser" }],
   },
   {
     timestamps: true,
@@ -34,7 +35,5 @@ WorkspaceSchema.set("toJSON", {
 WorkspaceSchema.get("toJSON", {
   virtuals: true,
 });
-
-
 
 export default model("Workspace", WorkspaceSchema);
